@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="http://v3.bootcss.com/favicon.ico">
+    <title>comment</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    <link href="/css/jumbotron.css" rel="stylesheet">
+    <!--[if lt IE 9]><script src="/libs/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="/libs/ie-emulation-modes-warning.js"></script>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<% include header.ejs %>
+    <!--登录(模态框)-->
+    <div class="modal fade" id="myLogin" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">登录账号</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <p>
+                            用户名：<input type="text" class="form-control" placeholder="请输入用户名" name="name" id="uname">
+                            <span></span>
+                        </p>
+                        <p>
+                            密码：<input type="password" class="form-control" placeholder="请输入密码" name="pwd" id="upwd">
+                            <span></span>
+                        </p>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-primary" id="login">登录</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--注册(模态框)-->
+    <div class="modal fade" id="myReg" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">注册账号</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <p>
+                            用户名：<input type="text" class="form-control" placeholder="请输入用户名" name="name" id="rname">
+                            <span></span>
+                        </p>
+                        <p>
+                            密码：<input type="password" class="form-control" placeholder="密码以字母开头，长度在6~12之间，只能包含字符、数字和下划线" name="pwd" id="rpwd">
+                            <span></span>
+                        </p>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-primary" id="reg">注册</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="jumbotron">
+        <div class="container">
+            <div class="row">
+                <!--登录状态-->
+                <%if(state){%>
+                <div class="col-md-2 col-xs-12">
+                    <a href="/userPic" class="">
+                        <img src="<%= picUrl %>" class="img-rounded pull-left" id="uPic" alt="" >
+                    </a>
+                    <p class="pull-left"><%= name %></p>
+                </div>
+                <div class="col-md-10 col-xs-12">
+                    <form class="form-horizontal" action="/add" method="post" id="messb">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">留言</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" rows="5" name="mess" style="resize:none"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-default">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!--非登录状态-->
+                <%}else{%>
+                <div class="col-md-4">
+                    <div>
+                        <% if(state){ %>
+                        <a href="/userPic">
+                            <img src="<%= picUrl %>" alt="" class="img-rounded pull-left" id="uPic">
+                        </a>
+                        <% }else{ %>
+                        <a href="#">
+                            <img src="/images/user.jpg" alt="" class="img-rounded pull-left" id="uPic">
+                            <% } %>
+                        </a>
+                    </div>
+                    <h2>欢迎</h2>
+                    <p class="text-left">用户交流投诉平台</p>
+                    <p><a class="btn btn-primary" href="#" data-toggle="modal" data-target="#myReg">注册 »</a></p>
+                </div>
+                <div class="col-md-8">
+                    <form>
+                        <caption>已有账号登录</caption>
+                        <div class="form-group">
+                            <label for="usertext">用户名</label>
+                            <input type="text" class="form-control" id="uuname" placeholder="请输入用户名" name="name">
+                            <span></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="userpwd">密码</label>
+                            <input type="password" class="form-control" id="uupwd" placeholder="请输入密码" name="pwd">
+                            <span></span>
+                        </div>
+                        <button type="button" class="btn btn-default" id="ulogin">登录</button>
+                    </form>
+                </div>
+                <% }%>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <nav>
+            <ul class="pagination">
+                <%for(var i = 1; i <= num; i++){ %>
+                <li class="showPage" data-page="<%= i %>"><a href="#"><%= i %></a></li>
+                <% } %>
+            </ul>
+        </nav>
+    </div>
+    <div class="container" id="info">
+        <!--模板填充位置-->
+    </div>
+    <script src="/libs/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="/libs/jquery.min.js"><\/script>')</script>
+    <script src="/libs/bootstrap.min.js"></script>
+    <script src="/libs/ie10-viewport-bug-workaround.js"></script>
+    <script src="/libs/underscoreNodejs.min.js"></script>
+    <script src="/infoSend.js"></script>
+    <!--underscore模板-->
+    <script type="text/template" id="temp1">
+        <ul class="list-unstyled">
+            <li>
+                <div class="col-md-4">
+                    <ul class="list-unstyled">
+                        <li><img src="{{= docs.picUrl }}" alt=""></li>
+                        <li>【昵称】<span>{{= docs.name }}</span></li>
+                        <li>【信息】<span>{{= docs.mess }}</span></li>
+                        <li>【时间】<span>{{= docs.time }}</span></li>
+                        <% if(active=="myMess"){%>
+                        <li><a href="/del?id={{= docs._id }}">删除</a></li>
+                        <% }%>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </script>
+</body>
+</html>
